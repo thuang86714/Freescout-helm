@@ -5,10 +5,11 @@ metadata:
   labels:
     io.kompose.service: freescout-db-backup-claim0
   name: freescout-db-backup-claim0
+  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.freescout-db-backup-claim0.storage }}
 status: {}

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -c
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: freescout-db-backup
+  name: freescout-db-backup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: freescout-db-backup
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -c
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/nginx-proxy: "true"
+        io.kompose.service: freescout-db-backup
+    spec:
+      containers:
+        - env:
+            - name: COMPRESSION
+              value: BZ
+            - name: CONTAINER_NAME
+              value: freescout-db-backup
+            - name: DB_CLEANUP_TIME
+              value: "8640"
+            - name: DB_DUMP_BEGIN
+              value: "0000"
+            - name: DB_DUMP_FREQ
+              value: "1440"
+            - name: DB_HOST
+              value: freescout-db
+            - name: DB_NAME
+              value: freescout
+            - name: DB_PASS
+              value: freescout
+            - name: DB_TYPE
+              value: mariadb
+            - name: DB_USER
+              value: freescout
+            - name: MD5
+              value: "TRUE"
+          image: tiredofit/db-backup
+          name: freescout-db-backup
+          resources: {}
+          volumeMounts:
+            - mountPath: /backup
+              name: freescout-db-backup-claim0
+      restartPolicy: Always
+      volumes:
+        - name: freescout-db-backup-claim0
+          persistentVolumeClaim:
+            claimName: freescout-db-backup-claim0
+status: {}

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -c
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: freescout-db
+  name: freescout-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: freescout-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -c
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/nginx-proxy: "true"
+        io.kompose.service: freescout-db
+    spec:
+      containers:
+        - env:
+            - name: CONTAINER_NAME
+              value: freescout-db
+            - name: DB_NAME
+              value: freescout
+            - name: DB_PASS
+              value: freescout
+            - name: DB_USER
+              value: freescout
+            - name: ROOT_PASS
+              value: password
+          image: tiredofit/mariadb
+          name: freescout-db
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: freescout-db-claim0
+      restartPolicy: Always
+      volumes:
+        - name: freescout-db-claim0
+          persistentVolumeClaim:
+            claimName: freescout-db-claim0
+status: {}

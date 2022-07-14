@@ -5,10 +5,11 @@ metadata:
   labels:
     io.kompose.service: freescout-app-claim1
   name: freescout-app-claim1
+  namespcae: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.freescout-app-claim1.storage }}
 status: {}

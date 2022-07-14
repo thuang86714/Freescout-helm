@@ -8,7 +8,7 @@ metadata:
   labels:
     io.kompose.service: freescout-app
   name: {{ .Values.app.metadata.name }}
-  namespace: {{ .Values.app.metadata.namespace}}
+  namespace: {{ .Values.namespace}}
 spec:
   replicas: {{ .Values.app.spec.replicas }}
   selector:

@@ -1,1 +1,52 @@
+namespcae: argocd
 
+app:
+  metadata:
+    name: freescout-app
+    namespace: argocd
+  specs:
+    replicas:1
+    template:
+      spec:
+        containers:
+          env:
+            ADMIN_EMAIL: admin@example.com
+            ADMIN_PASS: mlabsg@2022
+            CONTAINER_NAME: freescout-db
+            DB_HOST: freescout-db
+            DB_NAME: freescout
+            DB_PASS: mlabsg@2022
+            DB_USER: mlabsg
+            LETSENCRYPT_EMAIL: admin@example.com
+            LETSENCRYPT_HOST: example.com
+            SITE_URL: https://freescout.example.com
+            VIRTUAL_HOST: freescout.example.com
+            
+db:
+  spec:
+    replicas: 1
+    containers:
+      env:
+        DB_TYPE: mariadb
+        ROOT_PASS: mlabroot
+      volumeMounts:
+        freescout-db-claim0: /var/lib/mysql
+
+db-backup:
+  name: freescout-db-backup
+  spec:
+    containers:
+      volumeMounts:
+        freescout-db-backup-claim0: /backup
+  
+freescout-app-claim0:
+  storage: 100Mi
+
+freescout-app-claim1:
+  storage: 100Mi
+
+freescout-db-claim0:
+  storage: 100Mi
+
+freescout-db-backup-claim0:
+  storage: 100Mi

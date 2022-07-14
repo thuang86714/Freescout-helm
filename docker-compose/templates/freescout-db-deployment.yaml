@@ -8,8 +8,9 @@ metadata:
   labels:
     io.kompose.service: freescout-db
   name: freescout-db
+  namespace:  {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.db.spec.replicas }}
   selector:
     matchLabels:
       io.kompose.service: freescout-db
@@ -30,18 +31,18 @@ spec:
             - name: CONTAINER_NAME
               value: freescout-db
             - name: DB_NAME
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_NAME }}
             - name: DB_PASS
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_PASS }}
             - name: DB_USER
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_USER }}
             - name: ROOT_PASS
-              value: password
+              value: {{ .Values.db.spec.containers.env.ROOT_PASS }}
           image: tiredofit/mariadb
           name: freescout-db
           resources: {}
           volumeMounts:
-            - mountPath: /var/lib/mysql
+            - mountPath: {{ .Values.db.spec.containers.volumeMounts.freescout-db-claim0 }}
               name: freescout-db-claim0
       restartPolicy: Always
       volumes:

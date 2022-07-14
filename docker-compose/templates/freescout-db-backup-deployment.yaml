@@ -7,7 +7,8 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: freescout-db-backup
-  name: freescout-db-backup
+  name: {{ .Values.db-backup.name }}
+  namespcae: {{ .Values.namespace }}
 spec:
   replicas: 1
   selector:
@@ -38,15 +39,15 @@ spec:
             - name: DB_DUMP_FREQ
               value: "1440"
             - name: DB_HOST
-              value: freescout-db
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_HOST }}
             - name: DB_NAME
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_NAME }}
             - name: DB_PASS
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_PASS }}
             - name: DB_TYPE
-              value: mariadb
+              value: {{ .Values.db.spec.containers.env.DB_TYPE }}
             - name: DB_USER
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_USER }}
             - name: MD5
               value: "TRUE"
           image: tiredofit/db-backup

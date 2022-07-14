@@ -7,9 +7,10 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: freescout-app
-  name: freescout-app
+  name: {{ .Values.app.metadata.name }}
+  namespace: {{ .Values.app.metadata.namespace}}
 spec:
-  replicas: 1
+  replicas: {{ .Values.app.spec.replicas }}
   selector:
     matchLabels:
       io.kompose.service: freescout-app
@@ -28,33 +29,33 @@ spec:
       containers:
         - env:
             - name: ADMIN_EMAIL
-              value: admin@admin.com
+              value: {{ .Values.app.spec.template.spec.containers.env.ADMIN_EMAIL }}
             - name: ADMIN_PASS
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.ADMIN_PASS }}
             - name: CONTAINER_NAME
-              value: freescout-app
+              value: {{ .Values.app.spec.template.spec.containers.env.CONTAINER_NAME }}
             - name: DB_HOST
-              value: freescout-db
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_HOST }}
             - name: DB_NAME
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_NAME }}
             - name: DB_PASS
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_PASS }}
             - name: DB_USER
-              value: freescout
+              value: {{ .Values.app.spec.template.spec.containers.env.DB_USER }}
             - name: DISPLAY_ERRORS
               value: "FALSE"
             - name: ENABLE_SSL_PROXY
               value: "TRUE"
             - name: LETSENCRYPT_EMAIL
-              value: admin@example.com
+              value: {{ .Values.app.spec.template.spec.containers.env.LETSENCRYPT_EMAIL }}
             - name: LETSENCRYPT_HOST
-              value: freescout.example.com
+              value: {{ .Values.app.spec.template.spec.containers.env.LETSENCRYPT_HOST }}
             - name: SITE_URL
-              value: https://freescout.example.com
+              value: {{ .Values.app.spec.template.spec.containers.env.SITE_URL }}
             - name: TIMEZONE
-              value: America/Vancouver
+              value: Singapore
             - name: VIRTUAL_HOST
-              value: freescout.example.com
+              value: {{ .Values.app.spec.template.spec.containers.env.VIRTUAL_HOST }}
             - name: VIRTUAL_NETWORK
               value: nginx-proxy
             - name: VIRTUAL_PORT

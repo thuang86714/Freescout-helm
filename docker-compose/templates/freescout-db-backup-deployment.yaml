@@ -54,7 +54,7 @@ spec:
           name: freescout-db-backup
           resources: {}
           volumeMounts:
-            - mountPath: /backup
+            - mountPath: {{ .Values.db-backup.spec.containers.volumeMounts.freescout-db-backup-claim0 }}
               name: freescout-db-backup-claim0
       restartPolicy: Always
       volumes:
